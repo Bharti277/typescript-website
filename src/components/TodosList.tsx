@@ -3,7 +3,7 @@ import { useSearchParams } from "react-router-dom";
 
 const TodosList = () => {
   const { todos, toggleCompleted, handleDeleteTodo } = useTodos();
-  const [searchParams, setSearchParams] = useSearchParams();
+  const [searchParams] = useSearchParams();
   const todosFilter = searchParams.get("todos");
 
   let filterData = todos;
