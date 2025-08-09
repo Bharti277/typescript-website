@@ -1,11 +1,12 @@
 import AddTodo from "./components/AddTodo";
 import TodosList from "./components/TodosList";
 import Navbar from "./components/Navbar";
+import "./App.scss";
 
 const App = () => {
   return (
-    <div>
-      <h1>Todo List</h1>
+    <div className="app-container">
+      <h1 className="app-title">Todo List</h1>
       <Navbar />
       <AddTodo />
       <TodosList />

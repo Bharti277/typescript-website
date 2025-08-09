@@ -1,0 +1,59 @@
+@import '../styles/variables';
+
+.todos-list {
+  list-style: none;
+  padding: 0;
+
+  .todo-item {
+    display: flex;
+    align-items: center;
+    gap: $spacing-base;
+    padding: $spacing-base;
+    background-color: #ffffff;
+    border-radius: $border-radius-base;
+    margin-bottom: $spacing-sm;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    transition: box-shadow 0.3s ease;
+
+    &:hover {
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    &.completed {
+      .todo-text {
+        text-decoration: line-through;
+        color: $secondary-color;
+      }
+    }
+
+    .todo-checkbox {
+      width: 20px;
+      height: 20px;
+      cursor: pointer;
+    }
+
+    .todo-text {
+      flex-grow: 1;
+      font-size: $font-size-base;
+    }
+
+    .delete-button {
+      background-color: $accent-color;
+      color: white;
+      border: none;
+      padding: $spacing-sm $spacing-base;
+      border-radius: $border-radius-base;
+      cursor: pointer;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+
+      &:hover {
+        background-color: darken($accent-color, 10%);
+      }
+    }
+
+    &:hover .delete-button {
+      opacity: 1;
+    }
+  }
+}

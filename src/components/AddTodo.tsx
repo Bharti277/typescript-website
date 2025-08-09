@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useTodos } from "../store/todos";
+import "./AddTodo.scss";
 
 const AddTodo = () => {
   const [todo, setTodo] = useState<string>("");
@@ -7,23 +8,24 @@ const AddTodo = () => {
 
   const handleFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    if (todo.trim() === "") {
+      alert("Please enter a todo");
+      return;
+    }
     handleAddTodo(todo);
     setTodo("");
   };
 
   return (
-    <div>
-      <form onSubmit={handleFormSubmit}>
-        <input
-          type="text"
-          name=""
-          id=""
-          value={todo}
-          onChange={(e) => setTodo(e.target.value)}
-        />
-        <button type="submit">Add</button>
-      </form>
-    </div>
+    <form className="add-todo-form" onSubmit={handleFormSubmit}>
+      <input
+        type="text"
+        value={todo}
+        onChange={(e) => setTodo(e.target.value)}
+        placeholder="Add a new todo"
+      />
+      <button type="submit">Add</button>
+    </form>
   );
 };
 
