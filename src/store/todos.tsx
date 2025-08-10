@@ -1,24 +1,6 @@
-import { createContext, useContext, useState } from "react";
-
-export type TodosProviderProps = {
-  children: React.ReactNode;
-};
-
-export type Todo = {
-  id: string;
-  task: string;
-  completed: boolean;
-  createdAt: Date;
-};
-
-export type TodosContextProps = {
-  todos: Todo[];
-  handleAddTodo: (task: string) => void;
-  toggleCompleted: (id: string) => void;
-  handleDeleteTodo: (id: string) => void;
-};
-
-export const todosContext = createContext<TodosContextProps | null>(null);
+import { useState } from "react";
+import type { Todo, TodosProviderProps } from "./types";
+import { todosContext } from "./todosContext";
 
 export const TodosProvider = ({ children }: TodosProviderProps) => {
   const [todos, setTodos] = useState<Todo[]>(() => {
@@ -70,12 +52,4 @@ export const TodosProvider = ({ children }: TodosProviderProps) => {
       {children}
     </todosContext.Provider>
   );
-};
-
-export const useTodos = () => {
-  const todosConsumer = useContext(todosContext);
-  if (!todosConsumer) {
-    throw new Error("useTodos must be used within a TodosProvider");
-  }
-  return todosConsumer;
 };

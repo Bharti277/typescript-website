@@ -1,4 +1,4 @@
-@import '../styles/variables';
+@use "../styles/variables" as *;
 
 .navbar {
   background-color: transparent;
@@ -12,6 +12,7 @@
     list-style: none;
     display: flex;
     gap: $spacing-base;
+    padding-left: 0;
 
     a {
       color: $secondary-color;
