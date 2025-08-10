@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState } from "react";
+import React, { createContext, useContext, useState, useEffect } from "react";
 
 interface Todo {
   id: string;
@@ -16,30 +16,47 @@ interface TodosContextType {
 
 const TodosContext = createContext<TodosContextType | undefined>(undefined);
 
+// Key for localStorage
+const TODOS_STORAGE_KEY = "todos-typescript-app";
+
 export const TodosProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
-  const [todos, setTodos] = useState<Todo[]>([]);
+  // Initialize state with data from localStorage
+  const [todos, setTodos] = useState<Todo[]>(() => {
+    const storedTodos = localStorage.getItem(TODOS_STORAGE_KEY);
+    return storedTodos ? JSON.parse(storedTodos) : [];
+  });
+
+  // Save to localStorage whenever todos change
+  useEffect(() => {
+    localStorage.setItem(TODOS_STORAGE_KEY, JSON.stringify(todos));
+  }, [todos]);
 
   const handleAddTodo = (task: string) => {
-    setTodos([...todos, { id: Date.now().toString(), task, completed: false }]);
+    setTodos((prevTodos) => [
+      ...prevTodos,
+      { id: Date.now().toString(), task, completed: false },
+    ]);
   };
 
   const toggleCompleted = (id: string) => {
-    setTodos(
-      todos.map((todo) =>
+    setTodos((prevTodos) =>
+      prevTodos.map((todo) =>
         todo.id === id ? { ...todo, completed: !todo.completed } : todo
       )
     );
   };
 
   const handleDeleteTodo = (id: string) => {
-    setTodos(todos.filter((todo) => todo.id !== id));
+    setTodos((prevTodos) => prevTodos.filter((todo) => todo.id !== id));
   };
 
   const handleUpdateTodo = (id: string, newTask: string) => {
-    setTodos(
-      todos.map((todo) => (todo.id === id ? { ...todo, task: newTask } : todo))
+    setTodos((prevTodos) =>
+      prevTodos.map((todo) =>
+        todo.id === id ? { ...todo, task: newTask } : todo
+      )
     );
   };
 
