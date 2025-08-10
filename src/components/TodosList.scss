@@ -171,7 +171,6 @@
     }
 
     .delete-button {
-      background-color: $accent-color;
       color: white;
       border: none;
       padding: $spacing-sm $spacing-base;
@@ -181,7 +180,7 @@
       transition: opacity 0.3s ease;
 
       &:hover {
-        background-color: color.adjust($accent-color, $lightness: -10%);
+        background-color: color.adjust(#ccc, $lightness: -10%);
       }
     }
 
