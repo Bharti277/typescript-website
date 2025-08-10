@@ -1,6 +1,6 @@
 import { useState } from "react";
 import type { Todo, TodosProviderProps } from "./types";
-import { todosContext } from "./todosContext";
+import { todosContext } from "./todosContext"; // Fixed import
 
 export const TodosProvider = ({ children }: TodosProviderProps) => {
   const [todos, setTodos] = useState<Todo[]>(() => {

@@ -1,4 +1,15 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
+import type { TodosContext } from "./types";
+
+export const todosContext = createContext<TodosContext | undefined>(undefined);
+
+export const useTodos = () => {
+  const context = useContext(todosContext);
+  if (!context) {
+    throw new Error("useTodos must be used within TodosProvider");
+  }
+  return context;
+};
 
 interface Todo {
   id: string;
@@ -6,31 +17,20 @@ interface Todo {
   completed: boolean;
 }
 
-interface TodosContextType {
-  todos: Todo[];
-  handleAddTodo: (task: string) => void;
-  toggleCompleted: (id: string) => void;
-  handleDeleteTodo: (id: string) => void;
-  handleUpdateTodo: (id: string, newTask: string) => void;
+interface TodosProviderProps {
+  children: React.ReactNode;
 }
 
-const TodosContext = createContext<TodosContextType | undefined>(undefined);
-
-// Key for localStorage
-const TODOS_STORAGE_KEY = "todos-typescript-app";
-
-export const TodosProvider: React.FC<{ children: React.ReactNode }> = ({
-  children,
-}) => {
+export const TodosProvider: React.FC<TodosProviderProps> = ({ children }) => {
   // Initialize state with data from localStorage
   const [todos, setTodos] = useState<Todo[]>(() => {
-    const storedTodos = localStorage.getItem(TODOS_STORAGE_KEY);
+    const storedTodos = localStorage.getItem("todos-typescript-app");
     return storedTodos ? JSON.parse(storedTodos) : [];
   });
 
   // Save to localStorage whenever todos change
   useEffect(() => {
-    localStorage.setItem(TODOS_STORAGE_KEY, JSON.stringify(todos));
+    localStorage.setItem("todos-typescript-app", JSON.stringify(todos));
   }, [todos]);
 
   const handleAddTodo = (task: string) => {
@@ -61,7 +61,7 @@ export const TodosProvider: React.FC<{ children: React.ReactNode }> = ({
   };
 
   return (
-    <TodosContext.Provider
+    <todosContext.Provider
       value={{
         todos,
         handleAddTodo,
@@ -71,14 +71,6 @@ export const TodosProvider: React.FC<{ children: React.ReactNode }> = ({
       }}
     >
       {children}
-    </TodosContext.Provider>
+    </todosContext.Provider>
   );
-};
-
-export const useTodos = () => {
-  const context = useContext(TodosContext);
-  if (!context) {
-    throw new Error("useTodos must be used within a TodosProvider");
-  }
-  return context;
 };
